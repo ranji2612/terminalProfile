@@ -36,7 +36,7 @@ var Terminal = (function() {
                     <output ref="output">
                     </output>
                     <div className="input-line line" ref="inputLine">
-                        <div className="prompt">ranji2612@columbia$ </div>
+                        <div className="prompt">$ </div>
                         <div>
                             <input className="cmdline" ref="command" autofocus/>
                         </div>
