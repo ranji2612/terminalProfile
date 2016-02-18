@@ -1,6 +1,14 @@
 /** @jsx React.DOM */
 var Terminal = (function() {
     'use strict';
+    var printImage = function(src) {
+        var img = document.createElement('img');
+        img.src = src;
+        img.style.width = '100%';
+        var op = document.getElementsByTagName('output')[0];
+        op.appendChild(img);
+        fixScroll();
+    };
     var applyLine = function(msg, inpLine, outputLine) {
         var line = React.findDOMNode(inpLine).cloneNode(true);
         line.querySelector('div.prompt').innerHTML="";
@@ -11,10 +19,14 @@ var Terminal = (function() {
         input.autofocus = false;
         input.readOnly = true;
         var output = React.findDOMNode(outputLine).appendChild(line);
-  
+        fixScroll();
     };
-    const ENTER = 13;
-    const helpMsg = ["Here are some list of commands..","\n\tgithub\t- Visit my github profile","\n\tcv\t- See my CV","\n\tclear\t- Clears the screen"];
+    var fixScroll = function() {
+        var objDiv = document.getElementById("screen0");
+        objDiv.scrollTop = objDiv.scrollHeight;  
+    };
+    var ENTER = 13;
+    var helpMsg = ["Here are some list of commands..","\n\tgithub\t- Visit my github profile","\n\tcv\t- See my CV","\n\tgame\t- Play a game :)","\n\txkcd\t-Random xkcd","\n\tclear\t- Clears the screen"];
     var TerminalClass = React.createClass({
         propTypes: {
             commandHandler: React.PropTypes.object.isRequired
@@ -22,7 +34,7 @@ var Terminal = (function() {
         render: function() {
             return(
                 <div>
-                <div className="input-line line">
+                <div className="input-line line header">
 <br/>
 .______&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.__&nbsp;&nbsp;&nbsp;__.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;<br/>
 |&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;\&nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;|&nbsp;|__&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;/&nbsp;&nbsp;&nbsp;/_&nbsp;|&nbsp;|__&nbsp;\&nbsp;&nbsp;<br/>
@@ -70,32 +82,43 @@ var Terminal = (function() {
                 
                 //Actions based on Command List
                 if (input.value.trim()=='clear') {
+                
                     this.render();
                     React.findDOMNode(this.refs.output).innerHTML = "";
                     return;
+                
                 } else if (input.value.trim()=="help") {
-                    for(var help in helpMsg) {
-    applyLine(helpMsg[help],this.refs.inputLine,this.refs.output); 
-                    }
+                    
+                    for(var help in helpMsg)
+                        applyLine(helpMsg[help],this.refs.inputLine,this.refs.output); 
+                    
                 } else if (input.value.trim()=="github") {
+                    
                     var win = window.open('https://github.com/ranji2612', '_blank');
-                    if(win){
-                        //Browser has allowed it to be opened
-                        win.focus();
-                    }else{
-                        //Broswer has blocked it
-                        msg = "Pop-ups are not allowed by your browser.. Follow the link https://github.com/ranji2612 ";
-                    }
+                    if(win) win.focus();
+                    else msg = "Pop-ups are not allowed by your browser.. Follow the link https://github.com/ranji2612 ";
                     return;
+                
+                } else if (input.value.trim()=="xkcd") {
+                    var num = Math.random() * 1644;
+                    var js = 'http://dynamic.xkcd.com/api-0/jsonp/comic/'+parseInt(num);
+                    $.ajax({
+                        url: js,
+                        type: 'GET',
+                        dataType: 'jsonp',
+                        error: function(xhr, status, error) {
+                            alert("error");
+                        },
+                        success: function(result) {
+                            printImage(result.img);
+                        }
+                    });
+                    console.log(js['img']);
                 } else if (input.value.trim()=="cv") {
+                
                     var win = window.open('https://github.com/ranji2612/CV/blob/master/ranjith_kumar_rs3579_USLetter_Latest.pdf', '_blank');
-                    if(win){
-                        //Browser has allowed it to be opened
-                        win.focus();
-                    }else{
-                        //Broswer has blocked it
-                        msg = "Pop-ups are not allowed by your browser.. Follow the link https://github.com/ranji2612 ";
-                    }
+                    if(win) win.focus();
+                    else msg = "Pop-ups are not allowed by your browser.. Follow the link https://github.com/ranji2612 ";
                     return;
 
                 } else if (input.value.trim().toLowerCase()=="hi" || input.value.trim().toLowerCase()=="hello") {

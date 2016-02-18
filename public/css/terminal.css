@@ -97,6 +97,50 @@ body {
   -o-column-width: 100px;
   column-width: 100px;
 }
+
+/* Terminal Box */
+.screenMix {
+    background-color: #212121;
+    margin-top: -5px;
+    height: 10px;
+    margin-bottom: -5px;
+    width:50%;
+    margin-left: 25%;
+    margin-right:25%;
+
+}
+.screen {
+    border-radius: 5px;
+    background-color: #212121;
+    height: 60%;
+    width: 50%;
+    margin-left: 25%;
+    margin-right:25%;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 10px 24px 0 rgba(0, 0, 0, 0.19);
+}
+.screen-top {
+    border-radius: 5px;
+    top: -5px;
+    margin-top: 10%;
+    height : 25px;
+    width: 50%;
+    margin-left: 25%;
+    margin-right:25%;
+    background-color: #AAA;
+    overflow-y: visible;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 10px 24px 0 rgba(0, 0, 0, 0.19);
+}
+.header {
+    overflow-x: hidden;
+}
+.prompt {
+  color: #E2AE6D;
+}
+.cmdline {
+    color: #FFDCAD;
+}
 /* Themes */
 body.cream {
   color: black;
